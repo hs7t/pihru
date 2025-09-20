@@ -67,3 +67,5 @@ def postBeam():
 
     response = requests.post((API_ADDRESS + "/beam/"), json=beam)
     print(response)
+
+postBeam()
