@@ -13,3 +13,5 @@ def readRAMUsage():
         "available": psutilOutput.available,
         "percent": psutilOutput.percent,
     }
+
+print(psutil.sensors_temperatures()) # pyright: ignore[reportAttributeAccessIssue]
