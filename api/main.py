@@ -4,8 +4,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 class BeamStats(BaseModel):
-    cpuUsage: dict | None
-    ramUsage: dict | None
+    CPUUsage: dict | None
+    RAMUsage: dict | None
     storageUsage: dict | None
     temperature: int | None
 
