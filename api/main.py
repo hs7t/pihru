@@ -26,4 +26,4 @@ async def logBeam(beam: Beam):
 
 @app.get("/secretestsecret/")
 async def uncoverSecret(token: Annotated[str, Depends(oauth2_scheme)]):
-    return "i like cats"
+    return {"secret": "i like cats", "token": "token"}
