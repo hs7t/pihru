@@ -16,4 +16,6 @@ def readRAMUsage():
         "percent": psutilOutput.percent,
     }
 
-print(psutil.sensors_temperatures()) # pyright: ignore[reportAttributeAccessIssue]
+def readTemperature():
+    psutilOutput = psutil.sensors_temperatures() # pyright: ignore[reportAttributeAccessIssue]
+    currentTemperature = psutilOutput[MAIN_THERMAL_SENSOR_ID][0].current
