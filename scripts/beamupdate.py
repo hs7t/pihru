@@ -36,3 +36,16 @@ def readTemperature():
     currentTemperature = psutilOutput[MAIN_THERMAL_SENSOR_ID][0].current
 
     return currentTemperature
+
+def fetchStats():
+    checks = [("CPUUsage", readCPUUsage), ("RAMUsage", readRAMUsage), ("storageUsage", readStorageUsage), ("temperature", readTemperature)]
+
+    output = []
+    for checkName, function in checks:
+        try: 
+            output[checkName] = function()
+        except Exception as e:
+            print(f"oh no in {checkName}:", e)
+            output[checkName] = None
+    
+    return output
