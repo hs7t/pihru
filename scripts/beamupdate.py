@@ -2,6 +2,7 @@ import psutil
 import requests
 
 MAIN_THERMAL_SENSOR_ID = "cpu_thermal"
+API_ADDRESS = "localhost:8000"
 
 def readCPUUsage():
     psutilOutput = psutil.cpu_percent(interval=0.2)
