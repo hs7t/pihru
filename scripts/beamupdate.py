@@ -1,7 +1,8 @@
 import psutil
 import requests
-import datetime
+from datetime import datetime
 
+ISO_8601_FORMAT = "%Y-%m-%d %H:%M:%S"
 MAIN_THERMAL_SENSOR_ID = "cpu_thermal"
 API_ADDRESS = "localhost:8000"
 
@@ -50,3 +51,11 @@ def fetchStats():
             output[checkName] = None
     
     return output
+
+def postBeam():
+    beamStats = fetchStats()
+    
+    beam = {
+        "stats": beamStats,
+        "time": datetime.now().strftime(ISO_8601_FORMAT)
+    }
