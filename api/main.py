@@ -1,6 +1,6 @@
-import fastapi
 import datetime
 
+from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import Optional 
 
