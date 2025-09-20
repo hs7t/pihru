@@ -13,7 +13,7 @@ def readRAMUsage():
     return {
         "used": psutilOutput.used,
         "available": psutilOutput.available,
-        "percent": psutilOutput.percent,
+        "percentage": psutilOutput.percent,
     }
 
 def readTemperature():
