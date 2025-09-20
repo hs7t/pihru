@@ -11,9 +11,20 @@ def readCPUUsage():
 def readRAMUsage():
     psutilOutput = psutil.virtual_memory()
     return {
+        "total": psutilOutput.total,
         "used": psutilOutput.used,
         "available": psutilOutput.available,
         "percentage": psutilOutput.percent,
+    }
+
+def readStorageUsage():
+    psutilOutput = psutil.disk_usage('/')
+    diskUsage = psutilOutput
+
+    return {
+        "used": diskUsage.used,
+        "available": diskUsage.free,
+        "total": diskUsage.total,
     }
 
 def readTemperature():
