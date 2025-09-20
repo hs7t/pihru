@@ -10,11 +10,12 @@ def readCPUUsage():
 
 def readRAMUsage():
     psutilOutput = psutil.virtual_memory()
+    memoryUsage = psutilOutput
     return {
-        "total": psutilOutput.total,
-        "used": psutilOutput.used,
-        "available": psutilOutput.available,
-        "percentage": psutilOutput.percent,
+        "used": memoryUsage.used,
+        "percentage": memoryUsage.percent,
+        "available": memoryUsage.available,
+        "total": memoryUsage.total,
     }
 
 def readStorageUsage():
