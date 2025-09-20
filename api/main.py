@@ -15,3 +15,7 @@ class Beam(BaseModel):
     stats: BeamStats
 
 app = FastAPI()
+
+@app.post("/beam/")
+async def logBeam(beam: Beam):
+    print(beam)
