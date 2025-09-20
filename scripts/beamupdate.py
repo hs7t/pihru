@@ -1,5 +1,6 @@
 import psutil
 import requests
+import datetime
 
 MAIN_THERMAL_SENSOR_ID = "cpu_thermal"
 API_ADDRESS = "localhost:8000"
