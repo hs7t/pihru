@@ -4,7 +4,7 @@ from datetime import datetime
 
 ISO_8601_FORMAT = "%Y-%m-%d %H:%M:%S"
 MAIN_THERMAL_SENSOR_ID = "cpu_thermal"
-API_ADDRESS = "localhost:8000"
+API_ADDRESS = "http://localhost:8000"
 
 def readCPUUsage():
     psutilOutput = psutil.cpu_percent(interval=0.2)
@@ -54,7 +54,7 @@ def fetchStats():
 
 def postBeam():
     beamStats = fetchStats()
-    
+
     beam = {
         "stats": {
             "CPUUsage": beamStats["CPUUsage"],
@@ -64,3 +64,6 @@ def postBeam():
         },
         "time": datetime.now().strftime(ISO_8601_FORMAT)
     }
+
+    response = requests.post((API_ADDRESS + "/beam/"), json=beam)
+    print(response)
