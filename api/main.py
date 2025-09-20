@@ -5,8 +5,10 @@ from pydantic import BaseModel
 from typing import Optional 
 
 class BeamStats(BaseModel):
-    cpuUsage: Optional[object]
-
+    cpuUsage: Optional[dict]
+    ramUsage: Optional[dict]
+    storageUsage: Optional[dict]
+    temperature: Optional[int]
 
 class Beam(BaseModel):
     time: datetime.datetime
