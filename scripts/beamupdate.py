@@ -56,6 +56,11 @@ def postBeam():
     beamStats = fetchStats()
     
     beam = {
-        "stats": beamStats,
+        "stats": {
+            "CPUUsage": beamStats["CPUUsage"],
+            "RAMUsage": beamStats["RAMUsage"],
+            "storageUsage": beamStats["storageUsage"],
+            "temperature": beamStats["temperature"]
+        },
         "time": datetime.now().strftime(ISO_8601_FORMAT)
     }
