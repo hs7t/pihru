@@ -19,3 +19,5 @@ def readRAMUsage():
 def readTemperature():
     psutilOutput = psutil.sensors_temperatures() # pyright: ignore[reportAttributeAccessIssue]
     currentTemperature = psutilOutput[MAIN_THERMAL_SENSOR_ID][0].current
+
+    return currentTemperature
