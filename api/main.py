@@ -2,13 +2,12 @@ import datetime
 
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import Optional 
 
 class BeamStats(BaseModel):
-    cpuUsage: Optional[dict]
-    ramUsage: Optional[dict]
-    storageUsage: Optional[dict]
-    temperature: Optional[int]
+    cpuUsage: dict | None
+    ramUsage: dict | None
+    storageUsage: dict | None
+    temperature: int | None
 
 class Beam(BaseModel):
     time: datetime.datetime
