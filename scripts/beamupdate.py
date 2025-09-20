@@ -1,4 +1,5 @@
 import psutil
+import requests
 
 MAIN_THERMAL_SENSOR_ID = "cpu_thermal"
 
