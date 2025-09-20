@@ -23,6 +23,7 @@ def readStorageUsage():
 
     return {
         "used": diskUsage.used,
+        "percentage": diskUsage.percent,
         "available": diskUsage.free,
         "total": diskUsage.total,
     }
