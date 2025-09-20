@@ -1,5 +1,7 @@
 import psutil
 
+MAIN_THERMAL_SENSOR_ID = "cpu_thermal"
+
 def readCPUUsage():
     psutilOutput = psutil.cpu_percent(interval=0.2)
     return {
