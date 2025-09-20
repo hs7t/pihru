@@ -8,5 +8,6 @@ def readTemperature():
     try: 
         commandOutput = runCommand(['vcgencmd', 'measure_temp']).stdout
     except subprocess.CalledProcessError as e:
-        print("error running readTemperature: ", e)
+        raise e
+    
     
