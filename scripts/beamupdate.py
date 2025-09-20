@@ -1,10 +1,10 @@
 import subprocess
 
-def readEcho():
+def runOutputCommand(command: list):
     try:
-        result = subprocess.run(['echo', 'hello world'], capture_output=True, text=True, check=True)
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
         return result
     except subprocess.CalledProcessError as e: 
         return "oh no something happened idk"
 
-print(readEcho())
+print(runOutputCommand(['echo', 'hello, world']))
