@@ -13,3 +13,5 @@ class BeamStats(BaseModel):
 class Beam(BaseModel):
     time: datetime.datetime
     stats: BeamStats
+
+app = FastAPI()
