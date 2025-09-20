@@ -41,7 +41,7 @@ def readTemperature():
 def fetchStats():
     checks = [("CPUUsage", readCPUUsage), ("RAMUsage", readRAMUsage), ("storageUsage", readStorageUsage), ("temperature", readTemperature)]
 
-    output = []
+    output = {}
     for checkName, function in checks:
         try: 
             output[checkName] = function()
