@@ -4,7 +4,9 @@ db = dataset.connect("sqlite:///data.db")
 beams = db['beams']
 
 def insertBeam(beam):
-    tags.insert(beam)
+    beams.insert(beam)
 
 def readBeams():
-    return beams.all()
+    result = beams.all()
+    print(result)
+    return result
