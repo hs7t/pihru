@@ -1,3 +1,3 @@
 import dataset
 
-db = dataset.connect("sqlite:///beams.db")
+db = dataset.connect("sqlite:///data.db")
