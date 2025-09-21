@@ -60,7 +60,7 @@ def postBeam():
             "CPUUsage": beamStats["CPUUsage"],
             "RAMUsage": beamStats["RAMUsage"],
             "storageUsage": beamStats["storageUsage"],
-            "temperature": beamStats["temperature"]
+            "temperature": beamStats["temperature"],
         },
         "time": datetime.now().strftime(ISO_8601_FORMAT)
     }
