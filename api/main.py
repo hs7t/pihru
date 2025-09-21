@@ -25,6 +25,11 @@ class Beam(BaseModel):
 async def logBeam(beam: Beam):
     print(beam)
 
+@app.get("/beams/latest")
+async def getLatestBeam():
+    return readBeams()[-1]
+
 @app.get("/secretestsecret/")
 async def uncoverSecret(token: Annotated[str, Depends(oauth2_scheme)]):
     return {"secret": "i like cats", "token": "token"}
+
