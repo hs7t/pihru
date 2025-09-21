@@ -23,7 +23,7 @@ class Beam(BaseModel):
 
 @app.post("/beam/")
 async def logBeam(beam: Beam):
-    print(beam)
+    insertBeam(beam)
 
 @app.get("/beams/latest")
 async def getLatestBeam():
