@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 import jwt
 from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
@@ -28,9 +28,14 @@ class UserInDB(User):
     hashed_password: str
 
 EXCEPTIONS = {
-    401: {
+    "wrongUsernamePassword": {
         "status_code": status.HTTP_401_UNAUTHORIZED,
         "detail": "Incorrect username or password",
+        "headers": {"WWW-Authenticate": "Bearer"},
+    },
+    "credentialsError": {
+        "status_code" :status.HTTP_401_UNAUTHORIZED,
+        "detail": "Could not validate credentials",
         "headers": {"WWW-Authenticate": "Bearer"},
     }
 }
@@ -46,51 +51,46 @@ fake_users_db = {
     }
 }
 
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
+def verifyPassword(plaintext, hash):
+    return pwd_context.verify(plaintext, hash)
 
-def get_password_hash(password: str):
-    return pwd_context.hash(password)
+def getPasswordHash(plaintext: str):
+    return pwd_context.hash(plaintext)
 
-def get_user(db, username: str):
+def getUser(db, username: str):
     if username in db:
         user_dict = db[username]
         return UserInDB(**user_dict)
 
-def authenticate_user(fake_db, username: str, password: str):
-    user = get_user(fake_db, username)
+def authenticateUser(fake_db, username: str, password: str):
+    user = getUser(fake_db, username)
     if not user:
         return False
-    if not verify_password(password, user.hashed_password):
+    if not verifyPassword(password, user.hashed_password):
         return False
     return user
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
-    to_encode = data.copy()
+def createAccessToken(data: dict, expirationDelta: timedelta | None = None):
+    toEncode = data.copy()
 
-    if expires_delta:
-        expire = datetime.now(timezone.utc) + expires_delta
+    if expirationDelta:
+        expire = datetime.now(timezone.utc) + expirationDelta
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    toEncode.update({"exp": expire})
+    encoded_jwt = jwt.encode(toEncode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+async def getCurrentUser(token: Annotated[str, Depends(oauth2_scheme)]):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username = payload.get("sub")
         if username is None:
-            raise credentials_exception
+            raise HTTPException(**EXCEPTIONS["credentialsError"])
         token_data = TokenData(username=username)
     except InvalidTokenError:
-        raise credentials_exception
+        raise HTTPException(**EXCEPTIONS["credentialsError"])
     user = get_user(fake_users_db, username=token_data.username) # type: ignore
     if user is None:
-        raise credentials_exception
+        raise HTTPException(**EXCEPTIONS["credentialsError"])
     return user
