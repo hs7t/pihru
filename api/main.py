@@ -103,7 +103,7 @@ class Beam(BaseModel):
     stats: BeamStats
 
 @app.post("/beam/")
-async def logBeam(beam: Beam):
+async def logBeam(beam: Beam, user: Annotated[User, Depends(get_current_user)]):
     insertBeam(beam)
 
 @app.get("/beams/latest")
