@@ -35,7 +35,7 @@ async def getToken(
     user = authenticateUser(fake_users_db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(**EXCEPTIONS["wrongUsernamePassword"])
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(minutes=JWT_SETTINGS["ACCESS_TOKEN_EXPIRE_MINUTES"])
     access_token = createAccessToken(
         data={"sub": user.username}, expirationDelta=access_token_expires
     )
