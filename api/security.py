@@ -1,17 +1,21 @@
 from datetime import datetime, timedelta, timezone
 
+import json
+
+from typing import Annotated
+from pydantic import BaseModel
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 import jwt
 from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
 
-from typing import Annotated
-from pydantic import BaseModel
-
-SECRET_KEY = "ed14f4d0c23c0a176274d0994ed6c5cb0dd9722137d01351744b631a16c9ecbc"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRETS = json.load(open('secrets.json', 'r'))
+JWT_SETTINGS = {
+    "ALGORITHM": "HS256",
+    "ACCESS_TOKEN_EXPIRE_MINUTES": 30
+}
 
 class Token(BaseModel):
     access_token: str
@@ -78,12 +82,12 @@ def createAccessToken(data: dict, expirationDelta: timedelta | None = None):
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     toEncode.update({"exp": expire})
-    encoded_jwt = jwt.encode(toEncode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(toEncode, SECRETS.SECRET_KEY, algorithm=JWT_SETTINGS["ALGORITHM"])
     return encoded_jwt
 
 async def authenticateWithAccessToken(token: Annotated[str, Depends(oauth2_scheme)]):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRETS.SECRET_KEY, algorithms=JWT_SETTINGS["ALGORITHM"])
         username = payload.get("sub")
         if username is None:
             raise HTTPException(**EXCEPTIONS["credentialsError"])
