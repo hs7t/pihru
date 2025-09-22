@@ -81,7 +81,7 @@ def createAccessToken(data: dict, expirationDelta: timedelta | None = None):
     encoded_jwt = jwt.encode(toEncode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-async def getCurrentUser(token: Annotated[str, Depends(oauth2_scheme)]):
+async def authenticateWithAccessToken(token: Annotated[str, Depends(oauth2_scheme)]):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username = payload.get("sub")
