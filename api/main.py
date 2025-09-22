@@ -110,8 +110,8 @@ async def logBeam(beam: Beam, user: Annotated[User, Depends(get_current_user)]):
 async def getLatestBeam():
     return readBeams()[-1]
 
-@app.post("/token")
-async def login_for_access_token(
+@app.post("/authenticate/")
+async def getToken(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Token:
     user = authenticate_user(fake_users_db, form_data.username, form_data.password)
