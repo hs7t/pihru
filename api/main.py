@@ -21,7 +21,7 @@ class Beam(BaseModel):
     stats: BeamStats
 
 @app.post("/beam/")
-async def logBeam(beam: Beam, user: Annotated[User, Depends(get_current_user)]):
+async def logBeam(beam: Beam, user: Annotated[User, Depends(authenticateWithAccessToken)]):
     insertBeam(beam)
 
 @app.get("/beams/latest")
@@ -32,11 +32,11 @@ async def getLatestBeam():
 async def getToken(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Token:
-    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
+    user = authenticateUser(fake_users_db, form_data.username, form_data.password)
     if not user:
-        raise HTTPException(**EXCEPTIONS[401])
+        raise HTTPException(**EXCEPTIONS["wrongUsernamePassword"])
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+    access_token = createAccessToken(
+        data={"sub": user.username}, expirationDelta=access_token_expires
     )
     return Token(access_token=access_token, token_type="bearer")
