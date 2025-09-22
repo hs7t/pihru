@@ -20,6 +20,10 @@ class Beam(BaseModel):
     time: datetime
     stats: BeamStats
 
+@app.get("/")
+async def greet():
+    return "hiya!"
+
 @app.post("/beam/")
 async def logBeam(beam: Beam, user: Annotated[User, Depends(authenticateWithAccessToken)]):
     insertBeam(beam)
