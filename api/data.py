@@ -22,3 +22,9 @@ def findUsername(username):
     if user:
         return user
     else: return None
+
+def checkUser(username, passwordHash):
+    user = users.find_one(username=username, passwordHash=passwordHash) # pyright: ignore[reportOptionalMemberAccess]
+    if user:
+        return user
+    else: return None
