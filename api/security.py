@@ -48,14 +48,6 @@ EXCEPTIONS = {
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-fake_users_db = {
-    "june": {
-        "username": "june",
-        "hashed_password": "$2a$12$Suv2uJW7e6aJexs4R/6agexH8WYhA3OLJwddrlpqkbK64gUKEaXqO",
-        "disabled": False,
-    }
-}
-
 def verifyPassword(plaintext, hash):
     return pwd_context.verify(plaintext, hash)
 
