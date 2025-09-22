@@ -82,12 +82,12 @@ def createAccessToken(data: dict, expirationDelta: timedelta | None = None):
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     toEncode.update({"exp": expire})
-    encoded_jwt = jwt.encode(toEncode, SECRETS.SECRET_KEY, algorithm=JWT_SETTINGS["ALGORITHM"])
+    encoded_jwt = jwt.encode(toEncode, SECRETS["SECRET_KEY"], algorithm=JWT_SETTINGS["ALGORITHM"])
     return encoded_jwt
 
 async def authenticateWithAccessToken(token: Annotated[str, Depends(oauth2_scheme)]):
     try:
-        payload = jwt.decode(token, SECRETS.SECRET_KEY, algorithms=JWT_SETTINGS["ALGORITHM"])
+        payload = jwt.decode(token, SECRETS["SECRET_KEY"], algorithms=JWT_SETTINGS["ALGORITHM"])
         username = payload.get("sub")
         if username is None:
             raise HTTPException(**EXCEPTIONS["credentialsError"])
