@@ -16,3 +16,9 @@ users = db['users']
 
 def createUser(username, passwordHash):
     users.insert(dict(username=username, passwordHash=passwordHash)) # pyright: ignore[reportOptionalMemberAccess]
+
+def findUser(username):
+    user = users.find_one(username=username) # pyright: ignore[reportOptionalMemberAccess]
+    if user:
+        return user
+    else: return None
