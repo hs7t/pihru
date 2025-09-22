@@ -32,7 +32,7 @@ async def getLatestBeam():
 async def getToken(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Token:
-    user = authenticateUser(fake_users_db, form_data.username, form_data.password)
+    user = authenticateUser(form_data.username, form_data.password)
     if not user:
         raise HTTPException(**EXCEPTIONS["wrongUsernamePassword"])
     access_token_expires = timedelta(minutes=JWT_SETTINGS["ACCESS_TOKEN_EXPIRE_MINUTES"])

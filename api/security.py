@@ -10,6 +10,8 @@ import jwt
 from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
 
+from data import checkUser, findUsername
+
 SECRETS = json.load(open('secrets.json', 'r'))
 JWT_SETTINGS = {
     "ALGORITHM": "HS256",
@@ -60,16 +62,14 @@ def verifyPassword(plaintext, hash):
 def getPasswordHash(plaintext: str):
     return pwd_context.hash(plaintext)
 
-def getUser(db, username: str):
-    if username in db:
-        user_dict = db[username]
-        return UserInDB(**user_dict)
+def getUser(username: str):
+    return findUsername(username=username)
 
-def authenticateUser(fake_db, username: str, password: str):
-    user = getUser(fake_db, username)
+def authenticateUser(username: str, password: str):
+    user = getUser(username)
     if not user:
         return False
-    if not verifyPassword(password, user.hashed_password):
+    if not verifyPassword(password, user["passwordHash"]):
         return False
     return user
 
@@ -93,7 +93,7 @@ async def authenticateWithAccessToken(token: Annotated[str, Depends(oauth2_schem
         token_data = TokenData(username=username)
     except InvalidTokenError:
         raise HTTPException(**EXCEPTIONS["credentialsError"])
-    user = get_user(fake_users_db, username=token_data.username) # type: ignore
+    user = getUser(username=token_data.username) # type: ignore
     if user is None:
         raise HTTPException(**EXCEPTIONS["credentialsError"])
     return user
